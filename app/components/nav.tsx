@@ -4,18 +4,17 @@ const navItems = {
   "/": {
     name: "home",
   },
-  "https://github.com/toliv/": {
-    name: "github",
-  },
   "/projects": {
     name: "projects",
   },
   "/blog": {
     name: "blog",
   },
-
   "/books": {
     name: "books",
+  },
+  "https://github.com/toliv/": {
+    name: "github",
   },
   "/contact": {
     name: "contact",

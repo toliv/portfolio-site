@@ -1,0 +1,47 @@
+---
+title: "Setting up CD with Github Actions"
+publishedAt: "2024-08-01"
+summary: "Lessons learned the hard way setting up continuous deployment via Github Actions."
+---
+
+Recently, we configured our first automated continuous deployment process via Github Actions. At my company, we have only two deployment environments
+
+- `staging`, our staging environment used for engineering and product to validate and iterate on new features.
+- `live` , our production environment where live customers have access to our product
+
+Until now, we've used a single `deploy.yml` Github Action which was manually triggered from the Github Actions UI, taking two inputs
+
+- a branch (default to our `main` branch)
+- a choice of environment (`staging` or `live`)
+
+Note that a deployment to `live` also deployed to `staging`.
+
+Our goal outcomes for this project were
+
+- Every commit to our `main` branch should be automatically deployed to `staging`
+- A manual operator should be able to trigger a deploy to `live` based on the current version of code running in the `staging` environment
+
+## The Merge Queue
+
+We use Github's Merge Queue [0] to help validate merging code that relies on common state such as database migrations.
+
+Since the merge queue inherently handles concurrency by queuing merge requests and offering parameters such as max number of PRs to merge, min number of PRs to merge, we felt this was a good place to start. Our attempt at modifying our merge-queue.yml Action file to facilitate this looked like
+
+```
+name: Merge Queue
+  permissions: write-all
+
+on:
+  merge_group:
+  branches: [proto]
+  types: [checks_requested]
+
+jobs:
+  validate-migrations:
+    uses: ./.github/workflows/check-db-migrations.yml
+    secrets: inherit
+  deploy-to-devel:
+    uses: ./.github/workflows/deploy-to-devel.yml
+    needs: [validate-migrations]
+    secrets: inherit
+```

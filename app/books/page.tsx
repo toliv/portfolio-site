@@ -21,12 +21,6 @@ export default function Books() {
       <h2 className="text-xl font-semibold mb-2">Finished</h2>
       <div className="flex flex-col mb-4 ">
         <div>
-          <span className="italic">Iron Flame</span> - Yarros
-        </div>
-        <div>
-          <span className="italic">Fourth Wing</span> - Yarros
-        </div>
-        <div>
           <span className="italic">Eruption</span> - Crichton and Patterson
         </div>
         <div>

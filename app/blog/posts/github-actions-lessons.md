@@ -10,7 +10,7 @@ Here are a few short tips and lessons I've learned while working on Github Actio
 
 The following are things small and large I've learned, re-learned, and re-re-learned working with Github Actions.
 
-Many of these were learned during a big undertaking to enable basic continuous deploys in a prior role. I'll share the full details on that in another post, but I think these are more interesting and useful even out of that context.
+Many of these were learned during a big undertaking to enable basic continuous deploys in a prior role. I'll share the full details on that in another post, but I think these are interesting and useful even out of that context.
 
 I'll assume the reader has a basic understanding of a [Merge Queue](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue).
 
@@ -39,9 +39,95 @@ If you don't have a merge queue:
 
 If you **do** have a merge queue:
 
-1. your required status checks pass,
+1. Your required status checks pass
 2. **Then you can add your pull request to the merge queue**
-3. Some additional checks run as part of the merge queue
+3. Your required status checks run again
 4. The pull request is squashed and merged onto the default branch
 
-The way Github is set up, “required status checks” affect the ability to add a Pull Request to a Merge Queue, and there cannot be separate checks that only apply to the Merge Queue. Here was a Github Issue where others commented on this behavior, and how confusing it is! [[5]](https://github.com/orgs/community/discussions/47548)
+The way Github is set up, “required status checks” affect the ability to add a Pull Request to a Merge Queue, and there cannot be separate checks that only apply to the Merge Queue. Here was a Github Issue where others commented on this behavior, and how confusing it is! [[1]](https://github.com/orgs/community/discussions/47548)
+
+**TL;DR**: Required status checks will run both before the merge queue and during the merge queue. They cannot differ from each other.
+
+## The `${{}}` Expression
+
+When using a `${{}}` expression in a Github Actions file, you must escape it with quotes if the expression starts with `!`
+
+**DOES NOT WORK**
+
+`if: ${{ ! startsWith(github.ref, 'refs/tags/') }}`
+
+**WORKS**
+
+`if: "${{ ! startsWith(github.ref, 'refs/tags/') }}"`
+
+## Triggering Another Github Action
+
+Sometimes you want to "fire-and-forget" trigger another workflow starting. To accomplish this, use the Github CLI instead of the `uses` syntax.
+
+**This waits for `another-job` to finish**
+
+```yml
+start-another-job:
+  uses: ./.github/workflows/another-job.yml
+```
+
+In this setup, the "parent" job will wait and derive its status based on the result of `another-job.yml`.
+
+**Fire and Forget**
+
+```yml
+start-another-job-and-exit:
+ runs-on: ubuntu-latest
+  run: |
+     gh workflow run "Another Job" --ref ${{github.ref}}
+```
+
+In this setup, the parent job will terminate once the script executes, and the `gh workflow run` command doesn't wait for execution to finish - it just kicks it off.
+
+## Placeholder Workflow
+
+Along with others, I've also found iterating on Github Workflows to be particularly challenging. There's a lot of try-and-fail-and-try-and-fail etc.
+
+One subtle annoyance is that if you create a **new** Github Workflow in a Pull Request, you won't be able to test that workflow until its merged onto the main branch. Let me describe in a little more detail:
+
+```
+.
+  /.github
+    - some-workflow.yml (edited)
+```
+
+If you edit `some-workflow.yaml` on a branch, you can trigger `some-workflow.yml` via the UI **off of your branch**.
+
+If you create a new workflow entirely
+
+```
+.
+  /.github
+    - new-workflow.yml (added)
+```
+
+You won't be able to see that workflow in the UI - it only shows the workflows present on the main branch.
+
+One solution we've used to minor success is to have a permanent `test-workflow.yml` in our repository for testing these kind of changes. Ours looks like
+
+```yml
+# Github action doesn't support running net-new workflows from branches other than the main branch.
+# The purpose of this workflow is to just sit in main and allow us to trigger it from custom branches while
+# we build various workflows for other things.
+name: Workflow placeholder
+on:
+  workflow_dispatch:
+
+jobs:
+  placeholder:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      - name: Run a one-line script
+        run: echo Hello, world!
+```
+
+## Linting
+
+Having a linter for Github Actions is pretty convenient, since they have their own set of rules. I found a lot of benefit to using this GitHub Actions extension by Mathieu Dutour [https://marketplace.visualstudio.com/items?itemName=me-dutour-mathieu.vscode-github-actions](https://marketplace.visualstudio.com/items?itemName=me-dutour-mathieu.vscode-github-actions)

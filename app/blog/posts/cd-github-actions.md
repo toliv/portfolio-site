@@ -1,6 +1,6 @@
 ---
 title: "Setting up continuous deployment through Github Actions"
-publishedAt: "2024-08-01"
+publishedAt: "2024-08-02"
 summary: "Lessons learned the hard way setting up a continuous deployment through Github Actions."
 ---
 

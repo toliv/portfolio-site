@@ -217,4 +217,4 @@ It's certainly a matter of personal taste - I've just seen time-and-time again t
 
 ## Conclusion
 
-I hope that you benefit from learning about some of these quirks about Github Actions.
+I hope that you benefit from learning about some of these quirks about Github Actions and hopefully save you some time during your next project.

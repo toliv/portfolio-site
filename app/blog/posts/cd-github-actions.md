@@ -31,7 +31,7 @@ In this iteration, a deployment to `live` also deployed to `staging`.
 
 We use Github's Merge Queue [0] to help validate merging code that relies on common state such as database migrations.
 
-Since the merge queue inherently handles concurrency by queuing merge requests and offering parameters such as minimum and maximum number of PRs to merge, we felt this was a good place to start. Our attempt at modifying our `merge-queue.yml` Action file to facilitate this looked like
+Since the merge queue inherently handles concurrency by queuing merge requests and offering parameters such as minimum and maximum number of PRs to merge, we felt this was a good place to start. I will also note, my previous experience with Gitlab Merge Train led me to this perception of the Merge Queue. Our attempt at modifying our `merge-queue.yml` Action file to facilitate this looked like
 
 ```yml
 name: Merge Queue
@@ -185,73 +185,8 @@ Now we’re in an awesome spot, to recap:
 
 🎉
 
-## Things that I learned the hard way
+## Conclusion
 
-Here are a list of things small-to-large that I learned (and re-learned, and re-learned again) the hard way during this effort.
+I've shared here our journey to manual deployment to semi-automated continuous deployment via Github Actions. I hope that you find some value in seeing this experience so you can go about it differently.
 
-1. As mentioned earlier, “Required status checks” affect the ability to add a Pull Request to a Merge Queue, and you cannot have separate checks that only apply to the Merge Queue. Here was a Github Issue where others commented on this behavior, and how confusing it is! [[5]](https://github.com/orgs/community/discussions/47548)
-2. When using a `${{}}` expression in a Github Actions file, you must escape it with quotes if the expression starts with `!` [6]. ex.
-
-### BAD
-
-`if: ${{ ! startsWith(github.ref, 'refs/tags/') }}`
-
-### GOOD
-
-`if: "${{ ! startsWith(github.ref, 'refs/tags/') }}"`
-
-3. Also mentioned earlier, to achieve a “fire-and-forget” trigger of a different workflow starting, use the Github CLI instead of the `uses` syntax
-
-### Waits for this to end
-
-```yml
-start-another-job:
-  uses: ./.github/workflows/another-job.yml
-```
-
-### Fire and forget
-
-```yml
-start-another-job-and-exit:
- runs-on: ubuntu-latest
-  run: |
-     gh workflow run "Another Job" --ref ${{github.ref}}
-```
-
-4. Use a placeholder workflow to allow testing net new Github Actions workflow files. If you create a new workflow in a PR, it will not show up in your list of Actions until it has been merged onto the default branch. One useful way of getting around this we’ve used is a permanent `test-workflow.yml` file that always sits in the repo, allowing a user to edit the file on a branch and run the workflow off of their branch. Ours looks like
-
-```yml
-# Github action doesn't support running net-new workflows from branches other than the main branch.
-# The purpose of this workflow is to just sit in proto and allow us to trigger it from custom branches while
-# we build various workflows for other things.
-name: Workflow placeholder
-on:
-  workflow_dispatch:
-
-jobs:
-  placeholder:
-    runs-on: ubuntu-latest
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-      - name: Run a one-line script
-        run: echo Hello, world!
-```
-
-5. Using a linter can make your life easier. In VSCode, the GitHub Actions extension by Mathieu Dutour [6] made it easier to spot obvious syntax errors.
-
-## Sources
-
-[0] - [https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue)
-
-[1] - [https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/about-status-checks](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/about-status-checks)
-
-[2] - [https://docs.github.com/en/actions/using-jobs/using-concurrency](https://docs.github.com/en/actions/using-jobs/using-concurrency)
-
-[3] - [https://docs.github.com/en/actions/learn-github-actions/contexts#jobs-context](https://docs.github.com/en/actions/learn-github-actions/contexts#jobs-context)
-
-[4] - [https://docs.github.com/en/actions/using-workflows/using-github-cli-in-workflows](https://docs.github.com/en/actions/using-workflows/using-github-cli-in-workflows)
-
-[5] - [https://github.com/orgs/community/discussions/47548](https://github.com/orgs/community/discussions/47548)
-
-[6] - [https://marketplace.visualstudio.com/items?itemName=me-dutour-mathieu.vscode-github-actions](https://marketplace.visualstudio.com/items?itemName=me-dutour-mathieu.vscode-github-actions)
+I'd also invite you to check out my other post [Github Actions lessons learned the hard way](oliverio.dev/) for a few more subtleties of writing Github Actions workflows.

@@ -1,6 +1,6 @@
 ---
 title: "Github Actions lessons learned the hard way"
-publishedAt: "2024-07-27"
+publishedAt: "2024-08-02"
 summary: "Subtleties and Gotcha's when working with Github Actions: LARPing as a devops engineer"
 ---
 
@@ -131,3 +131,90 @@ jobs:
 ## Linting
 
 Having a linter for Github Actions is pretty convenient, since they have their own set of rules. I found a lot of benefit to using this GitHub Actions extension by Mathieu Dutour [https://marketplace.visualstudio.com/items?itemName=me-dutour-mathieu.vscode-github-actions](https://marketplace.visualstudio.com/items?itemName=me-dutour-mathieu.vscode-github-actions)
+
+## Factor Out the Logic
+
+Having spent a lot of time maintaining and debugging Github Actions, my biggest take away:
+
+**Do as little logic within the Github Action as possible**
+
+What do I mean by this?
+
+Basically, my personal preference is to write as much logic as possible in a sane language where you can re-use code and add tests. If I was to start from scratch, I would have followed this as much as possible. For example, instead of
+
+```yml
+do-a-job:
+ runs-on: ubuntu-latest
+  run: |
+    # Check if a file name is provided as an argument
+    if [ $# -eq 0 ]; then
+        echo "No file name provided. Usage: ./word_count.sh <filename>"
+        exit 1
+    fi
+
+    # Assign the first argument to a variable
+    filename=$1
+
+    # Check if the file exists
+    if [ ! -f "$filename" ]; then
+        echo "File not found!"
+        exit 1
+    fi
+
+    # Count the number of words in the file
+    word_count=$(wc -w < "$filename")
+
+    # Print the result
+    echo "The file '$filename' has $word_count words."
+```
+
+Do this instead
+
+```yml
+start-another-job-and-exit:
+ runs-on: ubuntu-latest
+  run: |
+      ./scripts/count-words.sh
+```
+
+Check in the bash file `word-count.sh`
+
+```bash
+# count-words.sh
+
+# Check if a file name is provided as an argument
+if [ $# -eq 0 ]; then
+    echo "No file name provided. Usage: ./word_count.sh <filename>"
+    exit 1
+fi
+
+# Assign the first argument to a variable
+filename=$1
+
+# Check if the file exists
+if [ ! -f "$filename" ]; then
+    echo "File not found!"
+    exit 1
+fi
+
+# Count the number of words in the file
+word_count=$(wc -w < "$filename")
+
+# Print the result
+echo "The file '$filename' has $word_count words."
+```
+
+Or even better (in my opinion) 🙂
+
+```yml
+start-another-job-and-exit:
+ runs-on: ubuntu-latest
+  run: |
+      ./scripts/count-words.py
+```
+
+It's certainly a matter of personal taste - I've just seen time-and-time again that the lack of testability with Github Actions ends up gathering poor composability and reusability.
+
+## Conclusion
+
+I hope that you benefit from learning about some of these quirks about Github Actions.

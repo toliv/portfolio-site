@@ -29,9 +29,9 @@ As a renter and non-owner, there are also a huge set of projects I've had zero e
 
 ![oh yeah!](https://penntoday.upenn.edu/sites/default/files/2022-08/ira-signing-main-teaser.jpg)
 
-Inspired by some specific reading in the 2022 Inflation Reduction Act, Tyler identified and shared some interesting trends:
+Inspired by some specific reading in the 2022 Inflation Reduction Act, my friend Tyler identified and shared some interesting trends:
 
-In promoting energy-efficient appliances, the bill provided incentives in the form of tax credits to home-owners for replacing their old appliances with new energy-efficient ones.
+To promote energy-efficient appliances, the bill provided tax credit incentives to home-owners for replacing their old appliances with new energy-efficient ones.
 
 Simple enough.
 
@@ -57,16 +57,16 @@ A: _First make sure that you understand the exact calculation of the credit by r
 
 At this point, we figured that there was some legitimate public value in building something straightforward that could provide a much-needed hand to the average buyer.
 
-Like the one mentioned above, we found dozens of spreadsheets for thousands of different appliances. Out of all the categories, we felt water heaters were a good place to start for a few reasons:
+Like spreadsheet mentioned above, we found dozens of spreadsheets for thousands of different appliances. Out of all the categories, we felt water heaters were a good place to start for a few reasons:
 
-- The universe of approved heaters was tolerable (about 700)
+- The universe of approved heaters was tolerable (about 600)
 - Home owners have to replace these relatively often (about once every 7 years)
 
 ## How the \*\*\*\* Do I Choose a New Water Heater
 
 I'll give a quick flyover on picking out a new water heater.
 
-This is what you probably think of when you think of a water heater, a **storage water heater** (tank water heater). The tank holds hot water and maintains a high temperature by periodically reheating, fueled by gas or electricity. The benefit of a tank heater is that there's a high volume of water ready-to-use all the time. The downside is that during periods of high demand, you'll use all the hot water in the tank and be left with a giant tank of cold water that needs time to heat. The way the heater is built, it will always strive to maintain a full volume of hot water - even when it's not being used!
+This is what you probably think of when you think of a water heater, a **storage water heater** (tank water heater).
 
 <Image
   src="/images/greensave/tank-heater.png"
@@ -75,7 +75,9 @@ This is what you probably think of when you think of a water heater, a **storage
   height={300}
 />
 
-More recently, there's been some innovation, and we now have **tankless water heaters**. Tankless water heaters.. well, they're pretty much exactly as you'd expect. They don't have a tank. Instead, they heat water on-demand by running cold (ground temperature) water through a heating element (gas or electric) and delivering it through the hot water pipes.
+The tank holds hot water and maintains a high temperature by periodically reheating, fueled by gas or electricity. The benefit of a tank heater is that there's a high volume of water ready-to-use all the time. The downside is that during periods of high demand, you'll use all the hot water in the tank and be left with a giant tank of cold water that needs time to heat. The way the heater is built, it will always strive to maintain a full volume of hot water - even when it's not being used!
+
+More recently, there's been some innovation, and we now have **tankless water heaters**.
 
 <Image
   src="/images/greensave/tankless-heater.jpg"
@@ -83,6 +85,8 @@ More recently, there's been some innovation, and we now have **tankless water he
   width={700}
   height={400}
 />
+
+Tankless water heaters.. well, they're pretty much exactly as you'd expect. They don't have a tank. Instead, they heat water on-demand by running cold (ground temperature) water through a heating element (gas or electric) and delivering it through the hot water pipes.
 
 Tankless water heaters typically use less energy because they're only heating water when required, not all the time. The tradeoff is that they can only heat so much water at a time - if you have 4 people showering at the same time, you'll probably have 4 people taking a cold shower at the same time.
 
@@ -94,13 +98,11 @@ _I'll also note that solar water heaters a really energy-efficient option, but a
 
 ### Determining Heater Performance
 
-Determining how well a water heater performs basically boils down to "how much hot water can it produce in a time interval."
+Determining how well a water heater performs basically boils down to "how much hot water can it produce in a given time interval."
 
 For a tankless water heater, this number is conveniently quoted in maximum gallons per minute. A standard value here is ~5 gallons / minute.
 
 For a tank-based heater (storage heater or heat pump), the math is slightly different. Since there's a tank of hot water already prepared, a different measurement is quoted - one that takes into account how long it takes to drain the already-hot water as well as how much more hot water it can recover in a period of time (recovery rate). What you'll find quoted for these types of heaters is its **First Hour Rating**: defined as "the amount of hot water [the heater] can produce in the first hour of operation, starting with a full tank of hot water" [Energy.gov](https://www.energy.gov/energysaver/sizing-new-water-heater)
-
-Max gallons/ minute vs First Hour Rating is kind of like comparing peaches and nectarines. Yeah they're both kinda similar and taste the same, but they're just a little different. Rightly so, the heaters work differently.
 
 As a buyer, your goal is to buy a heater capable of delivering hot water during your peak usage times. This usually involves some mental math including
 
@@ -181,7 +183,7 @@ _Rheem heaters are Home Depot heaters, and A.O. Smith heaters are Lowe's heaters
 
 As we started digging into the data, we noticed that many heaters in the spreadsheet seemed to be duplicates. These entries had unique IDs but the exact same columns (energy usage, sizing etc). Why exactly this is the case is a bit of a mystery, but we had a few guesses:
 
-- Multiple versions of the product are released without any change to the performance of the heater
+- New versions of the product are released without any change to the performance of the heater
 - "Whitelabeling" where some brand buys from the manufacturer and slaps their on branding on the heater
 
 ## Recommending a Heater
@@ -200,7 +202,7 @@ In order to show these recommendations, we have two steps:
 The filtering step will select water heaters that only match
 
 - The user's fuel type(s) (Electric, Natural Gas, etc)
-- The user's expected energy peak consumption
+- The user's expected energy peak consumption (from that that table above)
 - The user's space / size constraints
 
 After we've filtered down to only eligible water heaters, we can sort based on the relevant column (or projected column)
@@ -218,14 +220,14 @@ Picking the "best water heater for the environment" is more heuristic than the o
 - Solar > Gas Tankless > Heat Pump
 - Out of these, use the "10 year value" calculation to pick the choice
 
-Our instinct was the first two would be the most used.
+Our instinct was the first two (cheapest today, cheapest over 10 years) would be the most used.
 
 ## Building the App
 
 To make this accessible I put together a simple web app composed of
 
 - a 5 question form
-- a results page that shows the user 3 water heater replacements (the most inexpensive today, the most inexpensive over 10 years, the most eco-friendly)
+- a results page that shows the user 3 water heater recommendations
 
 Just out of speed and familiarity for these tools, I used:
 
@@ -331,7 +333,7 @@ Feel free to poke around at [trygreensave.com](trygreensave.com), I'm on the fre
 
 ## Acknowledgements
 
-First and foremost, massive credit to my partner and co-creator of this project Tyler Fallon who wore many hats including but not limited to
+I want to give massive credit to my partner and co-creator of this project Tyler Fallon who wore many hats including but not limited to
 
 - spreadsheet wizardry and energy usage modeling
 - appliance market research

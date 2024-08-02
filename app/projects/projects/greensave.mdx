@@ -1,9 +1,339 @@
 ---
 title: "Green$ave"
 publishedAt: "2024-07-28"
-summary: "A journey into choosing a new water heater"
+summary: "Providing localized water heater recommendations to buyers."
 ---
 
 ## Summary
 
-Turns out, choosing a new water heater is hard. In fact, most Americans just simply choose to trust their plumber.
+Earlier this year, my friend and I built a simple web app to help consumers replace a water heater. In this post I'll share what I've learned both on the practical side (about water heaters) and on the developer side (building the web site).
+
+## Background
+
+I've always considered myself handy around the house. I enjoy working "with my hands" and like to help other people with these kind of projects.
+
+As a renter in cramped NYC apartments going on 5 years now, I've gotten good at a particular set of projects like
+
+- mounting TVs
+- assembling Wayfair / Ikea / Amazon furniture
+- installing a dimmer switch
+- undoing all of these things once I move out
+
+As a renter and non-owner, there are also a huge set of projects I've had zero experience with such as
+
+- HVAC
+- washing machines
+- .... water heaters
+
+## The Inflation Reduction Act
+
+![oh yeah!](https://penntoday.upenn.edu/sites/default/files/2022-08/ira-signing-main-teaser.jpg)
+
+Inspired by some specific reading in the 2022 Inflation Reduction Act, Tyler identified and shared some interesting trends:
+
+In promoting energy-efficient appliances, the bill provided incentives in the form of tax credits to home-owners for replacing their old appliances with new energy-efficient ones.
+
+Simple enough.
+
+- How do I find an energy-efficient appliance that qualifies?
+- How do I know if it's the right one?
+- How can I redeem a tax credit?
+
+The unfortunate reality of large-scale legislation like the Inflation Reduction Act is that the lack of accessibility of the data (which ones qualify?) and the process (how do I get the savings?) is too complicated for the regular home-owner to take advantage.
+
+Based on hours of research and investigation, we found the following (unsatisfying) answers to those questions:
+
+Q: How do I find an energy-efficient appliance that qualifies?
+
+A: _Navigate through some .gov websites, Energy Star pages, etc until you finally find an Excel spreadsheet listing the hundreds of options out._
+
+Q: How do I know if it's the right one?
+
+A: _Depends on a lot of factors. Probably have to ask an installer, who's not likely going to care about your tax savings._
+
+Q: How can I redeem a tax credit?
+
+A: _First make sure that you understand the exact calculation of the credit by reading through the 1000 page document to find the relevant section. Then make sure that you qualify based on all the nuances of the policy (Is this your first house? Is this a primary residence? Have you claimed the credit already this year?). Finally scrape through the TurboTax or whatever-else software you use to try to find a relevant question to redeem the credit. Maybe just add a manual line item and hope you don't get audited._
+
+At this point, we figured that there was some legitimate public value in building something straightforward that could provide a much-needed hand to the average buyer.
+
+Like the one mentioned above, we found dozens of spreadsheets for thousands of different appliances. Out of all the categories, we felt water heaters were a good place to start for a few reasons:
+
+- The universe of approved heaters was tolerable (about 700)
+- Home owners have to replace these relatively often (about once every 7 years)
+
+## How the \*\*\*\* Do I Choose a New Water Heater
+
+I'll give a quick flyover on picking out a new water heater.
+
+This is what you probably think of when you think of a water heater, a **storage water heater** (tank water heater). The tank holds hot water and maintains a high temperature by periodically reheating, fueled by gas or electricity. The benefit of a tank heater is that there's a high volume of water ready-to-use all the time. The downside is that during periods of high demand, you'll use all the hot water in the tank and be left with a giant tank of cold water that needs time to heat. The way the heater is built, it will always strive to maintain a full volume of hot water - even when it's not being used!
+
+<Image
+  src="/images/greensave/tank-heater.png"
+  alt="A storage tank water heater"
+  width={300}
+  height={300}
+/>
+
+More recently, there's been some innovation, and we now have **tankless water heaters**. Tankless water heaters.. well, they're pretty much exactly as you'd expect. They don't have a tank. Instead, they heat water on-demand by running cold (ground temperature) water through a heating element (gas or electric) and delivering it through the hot water pipes.
+
+<Image
+  src="/images/greensave/tankless-heater.jpg"
+  alt="A tankless water heater"
+  width={700}
+  height={400}
+/>
+
+Tankless water heaters typically use less energy because they're only heating water when required, not all the time. The tradeoff is that they can only heat so much water at a time - if you have 4 people showering at the same time, you'll probably have 4 people taking a cold shower at the same time.
+
+Finally, there's another new type of (electric only) water heater called a **heat pump water heater (HPWH)**. A heat pump water heater looks like a normal storage water heater, but has an additional piece. By utilizing the (warm) air surrounding the tank and warm refrigerant, it is able to heat water more efficiently. I like this image / infographic from [Paschal.com](https://gopaschal.com/heat-pump-water-heater-vs-conventional-water-heater/)
+
+![Heat Pump Water Heater](https://gopaschal.com/wp-content/uploads/2022/12/20221125_BLOG_Heat-Pump-Water-Heater-HIW-01.png)
+
+_I'll also note that solar water heaters a really energy-efficient option, but as many houses are not suitable for them, I'll pass over them for now._
+
+### Determining Heater Performance
+
+Determining how well a water heater performs basically boils down to "how much hot water can it produce in a time interval."
+
+For a tankless water heater, this number is conveniently quoted in maximum gallons per minute. A standard value here is ~5 gallons / minute.
+
+For a tank-based heater (storage heater or heat pump), the math is slightly different. Since there's a tank of hot water already prepared, a different measurement is quoted - one that takes into account how long it takes to drain the already-hot water as well as how much more hot water it can recover in a period of time (recovery rate). What you'll find quoted for these types of heaters is its **First Hour Rating**: defined as "the amount of hot water [the heater] can produce in the first hour of operation, starting with a full tank of hot water" [Energy.gov](https://www.energy.gov/energysaver/sizing-new-water-heater)
+
+Max gallons/ minute vs First Hour Rating is kind of like comparing peaches and nectarines. Yeah they're both kinda similar and taste the same, but they're just a little different. Rightly so, the heaters work differently.
+
+As a buyer, your goal is to buy a heater capable of delivering hot water during your peak usage times. This usually involves some mental math including
+
+- how many showers you have
+- how many sinks you have
+- how many dishwashers you have
+- how many washing machines you have
+
+and how many of these things will be in use simultaneously.
+
+Here's the numbers we used for GreenSave based on some heuristics. Feel free to derive your own guesses too 🙂
+
+<Table
+  data={{
+    headers: [
+      "# of People in House",
+      "Peak First Hour Rating",
+      "Peak Flow Rate (gal)",
+    ],
+    rows: [
+      [1, 39, 1.8],
+      [2, 49, 3.3],
+      [3, 62, 5.0],
+      [4, 72, 7.3],
+      [5, 85, 8.8],
+      [6, 95, 10.5],
+    ],
+  }}
+/>
+
+### Measuring Heater Energy Usage
+
+To calculate how much it will cost you to run your water heater on an ongoing basis, you need to know how much energy the water heater consumes.
+
+For an electric heater, this is often quoted in kWH / year
+
+For a gas heater, this is often quoted in Therms / year
+
+For a propane heater, this is quoted in Gallons / year or propane.
+
+_As an aside, I was surprised to learn that so many water heaters can run on propane. In a remote setting with lack of access to the grid, this is pretty useful though._
+
+Conveniently, the Department of Energy has set an industry standard to describe the effiency of a water heater irrespective of the type of energy it consumes: the **Uniform Energy Factor** [link](https://www.energystar.gov/products/ask-the-experts/what-uniform-energy-factor-and-why-does-it-matter). It's described as "a ratio that measures how much of the energy a water heater uses is translated directly into heating water rather than wasted by heating the surrounding air or equipment"
+
+Energy-Star approved water heaters are more efficient, therefore using less energy, and having **higher UEFs**.
+
+## Base Data Set
+
+Mentioned earlier, it wasn't the most straightforward process to access and gather the list of certified water heaters. In fact, while trying to complete this writeup now, I'm struggling to retrace my steps to find the original spreadsheet dump we started with 😂.
+
+I am certain I used [data.energystar.gov](data.energystar.gov) in some form or fashion. The sheet has around 30-40 columns including data such as
+
+- name + manufacturer
+- energy type (gas, electric etc)
+- energy usage (kWH / year, therms / year etc)
+- tank dimensions
+- UEF
+
+Out of 602 total heaters listed:
+
+- 265 are Electric powered
+- 135 are Natural Gas powered
+- 78 are Propane powered
+- 94 are both Propane and Natural Gas powered
+- 30 are Solar powered
+
+The most common types of heater are
+
+- Hybrid/Electric Heat Pump (265 heaters)
+- Gas Tankless : (179 heaters)
+
+The most popular brands out of 45 total represented were
+
+- Rheem (142 heaters)
+- A.O. Smith (59 heaters)
+
+_Rheem heaters are Home Depot heaters, and A.O. Smith heaters are Lowe's heaters._
+
+As we started digging into the data, we noticed that many heaters in the spreadsheet seemed to be duplicates. These entries had unique IDs but the exact same columns (energy usage, sizing etc). Why exactly this is the case is a bit of a mystery, but we had a few guesses:
+
+- Multiple versions of the product are released without any change to the performance of the heater
+- "Whitelabeling" where some brand buys from the manufacturer and slaps their on branding on the heater
+
+## Recommending a Heater
+
+We sought to provide 3 different recommendations to a user:
+
+- The most affordable water heater today
+- The best value water heater over 10 years
+- The best water heater for the environment
+
+In order to show these recommendations, we have two steps:
+
+- Filter down to only **eligible** water heaters for the user
+- Sort the filtered results by the proper metric
+
+The filtering step will select water heaters that only match
+
+- The user's fuel type(s) (Electric, Natural Gas, etc)
+- The user's expected energy peak consumption
+- The user's space / size constraints
+
+After we've filtered down to only eligible water heaters, we can sort based on the relevant column (or projected column)
+
+For the "most affordable" heater, we simply take the sticker price of the water heater and apply the tax credit logic defined as the maximum of 30% of the cost OR $300, then yield the water heater with the lowest after-tax cost.
+
+_Note: The Energy Star dataset doesn't contain prices, we had to go manually collect as many as we could ourselves._
+
+For the best value water heater, the logic is a little more involved. In order to project the cost of the water heater over a longer period of time, we need to be able to calculate the yearly cost of running the heater.
+
+Specifically, we need the user's **localized** energy costs. For example, the price of natural gas is far cheaper in some states than others. By supplementing the data with localized energy prices, we're able to calculate the net savings over this period of time.
+
+Picking the "best water heater for the environment" is more heuristic than the others: based on some reading we came up with the decision tree:
+
+- Solar > Gas Tankless > Heat Pump
+- Out of these, use the "10 year value" calculation to pick the choice
+
+Our instinct was the first two would be the most used.
+
+## Building the App
+
+To make this accessible I put together a simple web app composed of
+
+- a 5 question form
+- a results page that shows the user 3 water heater replacements (the most inexpensive today, the most inexpensive over 10 years, the most eco-friendly)
+
+Just out of speed and familiarity for these tools, I used:
+
+- NextJS / React / Typescript for the app, hosted on Vercel
+- Prisma for my database client / schema / migrations
+- TailwindCSS for styling
+- Postgres instance hosted on Supabase
+- React Email / Resend to allow users to send themself results
+
+Since we were doing some level of data augmentation in Google Sheets, I developed some straightforward scripts to fetch the sheet as a CSV from Google Sheets, parse using `papaparse` [link](https://www.papaparse.com/), and insert into my database (either local or remote). I found `papaparse` to be really convenient and would recommend it for parsing CSVs.
+
+The most interesting piece, to me, was building the form to collect information from the user. I like the look of Typeform and thought it would be an interesting exercise to try to develop something similar. Particularly, I wanted to make the form scroll between questions for the user.
+
+The approach I took was pretty simple and not too extensible, but I'm pleased with the result. I've simplified a bit, but generally it looks like this:
+
+```typescript
+export function FinderForm() {
+  const [questionIdx, setQuestionIdx] = useState<number>(0);
+
+  const question1Ref = useRef<null | HTMLDivElement>(null);
+  const question2Ref = useRef<null | HTMLDivElement>(null);
+  const question3Ref = useRef<null | HTMLDivElement>(null);
+
+  // Doesn't necessarily need to be state, but I had a case where this could be changed
+  const [questionRefs, setQuestionRefs] = useState<
+    MutableRefObject<HTMLDivElement | null>[]
+  >([question1Ref, question2Ref, question3Ref]);
+
+  const moveToNextQuestion = () => {
+    if (questionIdx + 1 < questionRefs.length) {
+      const nextQuestion = questionRefs[questionIdx + 1];
+      // This is the crucial line.
+      nextQuestion.current?.scrollIntoView({
+        behavior: "smooth",
+      });
+      setQuestionIdx(questionIdx + 1);
+    }
+  };
+
+  const moveToPreviousQuestion = () => {
+    if (questionIdx - 1 >= 0) {
+      const prevQuestion = questionRefs[questionIdx - 1];
+      // This is the crucial line.
+      prevQuestion.current?.scrollIntoView({
+        behavior: "smooth",
+      });
+      setQuestionIdx(questionIdx - 1);
+    }
+  };
+
+  return (
+    <div>
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <div id="question1" ref={question1Ref}>
+            <Question
+              // Triggered on "Submit" for the question
+              moveToNextQuestion={moveToNextQuestion}
+              // Triggered on "Back" for the question
+              moveToPreviousQuestion={moveToPreviousQuestion}
+            ></Question>
+          </div>
+          <div id="question2" ref={question2Ref}>
+            <Question
+              moveToNextQuestion={moveToNextQuestion}
+              moveToPreviousQuestion={moveToPreviousQuestion}
+            ></Question>
+          </div>
+          <div id="question3" ref={question3Ref}>
+            <Question
+              moveToNextQuestion={moveToNextQuestion}
+              moveToPreviousQuestion={moveToPreviousQuestion}
+            ></Question>
+          </div>
+        </form>
+      </FormProvider>
+    </div>
+  );
+}
+```
+
+I'm sure there are better ways to go about doing this, would love to see other solutions!
+
+## Possible Extensions
+
+There is certainly a lot of room for improvement here, here are a few ideas that have immediately came to mind:
+
+- **Price Scraping**: In an initial iteration of this project, I spent some time building scripts to scrape prices from Home Depot and Lowe's websites. Opening up the network tab and "copy as cURL" got me decent results with Home Depot, but not with Lowe's. More automated price updates would be really helpful for a buyer to take advantage of sales etc. As this is more or less a proof-of-concept, I'm happy with where we are for now.
+- **Query Optimization**: The queries to filter and sort the water heaters are certainly slow and unoptimized. There are a few places where I used in-memory sorting where perhaps a SQL View could have been a more optimal choice (_Unfortunately Prisma does not yet support Views_). We also enforced some set of brand-name preferences to prioritize empirically more common names of heaters. For example, we show the brand name A.O. Smith heater over the identical, but different brand Rinnai heater because A.O. Smith is more common and findable.
+- **Loading / Suspense Boundary for Results**: Right now, the results page is rendered fully serverside. Rather than fetching all the data upfront, rendering the components clientside with a loading animation until the data is fetched could have been a better user experience.
+- **Custom Energy Prices**: As mentioned earlier, we have a set of state-by-state energy prices we're using to predict water heater costs for a user. It may be more helpful for a user to input their own prices or even forecast future prices to custom model their costs over time.
+
+## Closing Thoughts and Takeaways
+
+I've learned so much doing this project, but here are the main takeaways I have:
+
+- It's unfortunate to witness the lack of public accessibility surrounding the Inflation Reduction Act. It shouldn't be this hard to find a tax-credit-qualified water heater.
+- It's satisfying to build a tool for pure public utility.
+
+Hope you've enjoyed learning a bit about water heaters, and hope you get a chance to try out GreenSave!
+
+Feel free to poke around at [trygreensave.com](trygreensave.com), I'm on the free tier of Supabase so 50/50 odds the project is paused (I try to unpause when I remember).
+
+## Acknowledgements
+
+First and foremost, massive credit to my partner and co-creator of this project Tyler Fallon who wore many hats including but not limited to
+
+- spreadsheet wizardry and energy usage modeling
+- appliance market research
+- site design
+- price gathering

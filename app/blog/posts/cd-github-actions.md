@@ -189,4 +189,4 @@ Now we’re in an awesome spot, to recap:
 
 I've shared here our journey to manual deployment to semi-automated continuous deployment via Github Actions. I hope that you find some value in seeing this experience so you can go about it differently.
 
-I'd also invite you to check out my other post [Github Actions lessons learned the hard way](oliverio.dev/) for a few more subtleties of writing Github Actions workflows.
+I'd also invite you to check out my other post [Github Actions lessons learned the hard way](https://www.oliverio.dev/blog/github-actions-lessons) for a few more subtleties of writing Github Actions workflows.

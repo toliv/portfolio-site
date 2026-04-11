@@ -107,6 +107,7 @@ export function CustomMDX(props) {
   return (
     <MDXRemote
       {...props}
+      options={{ blockJS: false, ...(props.options || {}) }}
       components={{ ...components, ...(props.components || {}) }}
     />
   );

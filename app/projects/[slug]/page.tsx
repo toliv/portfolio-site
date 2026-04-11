@@ -4,6 +4,10 @@ import { baseUrl } from "app/sitemap";
 import { formatDate } from "app/utils/utils";
 import { getProjectsPosts } from "../utils";
 
+type PageProps = {
+  params: Promise<{ slug: string }>;
+};
+
 export async function generateStaticParams() {
   let posts = getProjectsPosts();
 
@@ -12,8 +16,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export function generateMetadata({ params }) {
-  let post = getProjectsPosts().find((post) => post.slug === params.slug);
+export async function generateMetadata({ params }: PageProps) {
+  let { slug } = await params;
+  let post = getProjectsPosts().find((post) => post.slug === slug);
   if (!post) {
     return;
   }
@@ -52,8 +57,9 @@ export function generateMetadata({ params }) {
   };
 }
 
-export default function Project({ params }) {
-  let post = getProjectsPosts().find((post) => post.slug === params.slug);
+export default async function Project({ params }: PageProps) {
+  let { slug } = await params;
+  let post = getProjectsPosts().find((post) => post.slug === slug);
 
   if (!post) {
     notFound();

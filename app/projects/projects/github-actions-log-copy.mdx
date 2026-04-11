@@ -1,0 +1,64 @@
+---
+title: "GitHub Actions Log Copy"
+publishedAt: "2026-04-11"
+summary: "One-click copy buttons for GitHub Actions step logs."
+---
+
+## Summary
+
+GitHub Actions Log Copy is a tiny browser extension that adds a copy button directly to each step header on GitHub Actions job log pages.
+
+The goal is simple: make it easy to copy the output from one step without scrolling through a giant log view and drag-selecting text by hand.
+
+## The problem
+
+GitHub Actions job pages make it awkward to copy the output of a single step.
+
+If a job has a long log, you usually have to:
+
+- expand the right step
+- scroll through the output
+- carefully drag-select only the text you want
+- hope you did not miss a line or grab the neighboring step
+
+That gets especially annoying when you are sharing a failure snippet, debugging a flaky test, or asking an LLM to help explain one particular step.
+
+## The product
+
+This extension adds a copy icon to the far right side of each step header, just to the left of the duration.
+
+When clicked, it:
+
+- auto-expands the step if needed
+- copies only that step's log lines
+- leaves out the step title, line numbers, and surrounding UI noise
+
+## Implementation notes
+
+GitHub virtualizes long logs in the DOM, which means a naive content-script approach can miss lines that are not currently mounted on the page.
+
+To make copying more reliable, the extension first tries to fetch the step-specific GitHub-hosted log fragment exposed on the page through the step's `data-log-url` attribute. If that fetch fails, it falls back to the rendered DOM.
+
+That makes the extension a pragmatic GitHub UI integration rather than an official API integration, but it keeps the implementation small and gives much better results for long logs.
+
+## Why I like this project
+
+I like small tools that solve a specific annoyance well.
+
+This one is intentionally narrow:
+
+- no account system
+- no backend
+- no analytics
+- no settings panel
+- just a focused improvement to one frustrating workflow
+
+It is also fully open source under the MIT license.
+
+## Links
+
+- Source: [github.com/toliv/gha-log-copy](https://github.com/toliv/gha-log-copy)
+- Support: [GitHub Issues](https://github.com/toliv/gha-log-copy/issues)
+- Privacy policy: [/privacy/github-actions-log-copy](/privacy/github-actions-log-copy)
+
+Browser store links will be added here once the Chrome Web Store and Firefox AMO listings are live.

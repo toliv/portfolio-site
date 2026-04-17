@@ -15,6 +15,7 @@
   --sh-jsxliterals: #6266d1;
   --sh-property: #e25a1c;
   --sh-entity: #e25a1c;
+  --terminal-prompt: #1a7f37;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,6 +24,7 @@
     --sh-identifier: white;
     --sh-keyword: #f47067;
     --sh-string: #0fa295;
+    --terminal-prompt: #3fb950;
   }
   html {
     color-scheme: dark;
@@ -35,6 +37,205 @@ html {
 
 body {
   font-variation-settings: 'MONO' 1, 'CASL' 0;
+}
+
+@keyframes title-caret-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.interactive-title {
+  --interactive-title-prompt-width: 3.2ch;
+  position: relative;
+  display: inline-grid;
+  max-width: 100%;
+  min-width: 0;
+  isolation: isolate;
+  vertical-align: top;
+}
+
+.interactive-title__text,
+.interactive-title__overlay {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+
+.interactive-title__text {
+  display: inline-block;
+  max-width: 100%;
+  position: relative;
+  z-index: 1;
+  transition:
+    opacity 180ms ease,
+    transform 220ms ease,
+    letter-spacing 220ms ease;
+}
+
+.interactive-title[data-variant='typing'] .interactive-title__overlay {
+  display: inline-block;
+  max-width: 100%;
+  pointer-events: none;
+  opacity: 0;
+  white-space: pre-wrap;
+  word-break: inherit;
+  overflow-wrap: inherit;
+  z-index: 2;
+  transition: opacity 80ms linear;
+}
+
+.interactive-title[data-variant='typing']::before {
+  content: '';
+  position: absolute;
+  inset: -0.05em calc(var(--interactive-title-prompt-width) * -1) -0.05em -0.12em;
+  z-index: 0;
+  background: currentColor;
+  opacity: 0;
+  transform: scaleX(0.94);
+  transform-origin: left;
+  transition:
+    opacity 180ms ease,
+    transform 220ms ease;
+}
+
+.interactive-title[data-variant='typing'][data-typing-visible='true']
+  .interactive-title__text {
+  opacity: 0;
+}
+
+.interactive-title[data-variant='typing'][data-typing-visible='true']::before {
+  opacity: 0.08;
+  transform: scaleX(1);
+}
+
+.interactive-title[data-variant='typing'][data-typing-visible='true']
+  .interactive-title__overlay {
+  opacity: 1;
+}
+
+.interactive-title__prompt {
+  color: var(--terminal-prompt);
+}
+
+.interactive-title__caret {
+  display: inline-block;
+  margin-left: 0.04em;
+  line-height: 1;
+  vertical-align: baseline;
+  animation: title-caret-blink 1s step-end infinite;
+}
+
+.interactive-title[data-variant='prompt'] {
+  padding-left: 0;
+  transition: padding-left 200ms ease;
+}
+
+.interactive-title[data-variant='prompt']::before {
+  content: '> ';
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transform: translateX(-0.35rem);
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.interactive-title[data-variant='prompt']::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: -0.12em;
+  left: 0;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.5;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition:
+    opacity 240ms ease,
+    transform 240ms ease;
+}
+
+.interactive-title[data-variant='cursor'] {
+  padding: 0 0.55ch 0 0.1ch;
+}
+
+.interactive-title[data-variant='cursor']::before {
+  content: '';
+  position: absolute;
+  inset: -0.05em -0.1em;
+  z-index: 0;
+  background: currentColor;
+  opacity: 0;
+  transform: scaleX(0.94);
+  transform-origin: left;
+  transition:
+    opacity 180ms ease,
+    transform 220ms ease;
+}
+
+.interactive-title[data-variant='cursor']::after {
+  content: '|';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  transform: translateX(-0.25rem);
+  transition:
+    opacity 160ms ease,
+    transform 220ms ease;
+}
+
+.group:is(:hover, :focus-visible) .interactive-title[data-variant='prompt'] {
+  padding-left: 1.2ch;
+}
+
+.group:is(:hover, :focus-visible) .interactive-title[data-variant='prompt']::before {
+  opacity: 0.8;
+  transform: translateX(0);
+}
+
+.group:is(:hover, :focus-visible) .interactive-title[data-variant='prompt']::after {
+  opacity: 0.8;
+  transform: scaleX(1);
+}
+
+.group:is(:hover, :focus-visible)
+  .interactive-title[data-variant='cursor']
+  .interactive-title__text {
+  transform: translateX(0.14rem);
+  letter-spacing: 0.02em;
+}
+
+.group:is(:hover, :focus-visible) .interactive-title[data-variant='cursor']::before {
+  opacity: 0.08;
+  transform: scaleX(1);
+}
+
+.group:is(:hover, :focus-visible) .interactive-title[data-variant='cursor']::after {
+  opacity: 1;
+  transform: translateX(0);
+  animation: title-caret-blink 1s step-end infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interactive-title,
+  .interactive-title__text,
+  .interactive-title__overlay,
+  .interactive-title::before,
+  .interactive-title::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 
 .prose .anchor {

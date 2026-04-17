@@ -33,6 +33,10 @@ html {
   min-width: 360px;
 }
 
+body {
+  font-variation-settings: 'MONO' 1, 'CASL' 0;
+}
+
 .prose .anchor {
   @apply absolute invisible no-underline;
 

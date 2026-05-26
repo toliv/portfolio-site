@@ -1,0 +1,27 @@
+---
+title: "The worst job interview I ever had"
+publishedAt: "2026-05-26"
+summary: "Or how not to do a culture fit interview"
+---
+
+The worst job interview I ever had wasn’t a knowledge meltdown, coding assessment failure, or a complete language misunderstanding with the interviewer (although I’ve had all of those, too). No, the worst job interview I had was something I can only describe as an unsolicited psych evaluation.
+
+I’m an engineer, primarily working for small startups. At a <10-person company, especially in the earliest days, cultural fit is of singular importance. Even if you hire a cracked engineer, it’s probably not gonna be a good experience all-around if you can’t make a human connection. All this is to say - I get why you’d want to prioritize this. But despite many quite normal culture fit interviews, there’s one I still replay in my confused head once in a while. And I think it’s worth sharing not because I want to shame the company or individuals (I’ve left them anonymous), but rather to suggest some reconsideration for founders and hiring managers in the same boat.
+
+I responded to a message looking for a founding engineer at a mental health startup (their noble cause was improving therapy access for at-risk youth). The first interview was a quick conversation with a founder and their head of engineering — a fairly uneventful informational interview (“this is why we’re great join us blah blah”). The follow-up with the head of engineering was scheduled shortly afterwards.
+
+The follow-up, they described over email, would be a bit non traditional - a ~90 minute culture fit chat. Note there was no technical assessment yet. Expecting little, I joined the video call. It was explained we’d just be getting to know each other based on some guiding questions.
+
+I fail to recall the exact wording of the discussion topics, but they were, in fact, non-technical — covering such lovely topics as the hardest day of my life, my biggest life challenges, and other similar “trauma-baiting” questions.
+
+Now, to be clear, I can understand why these discussions might give deep insight into a candidate! It’s just that I think it’s frankly a little invasive when you’re basically meeting this person for the first time.
+
+I’m a little ashamed remembering myself talking about failed relationships, family struggles, and interpersonal challenges in previous work environments. This person gave the impression that it was a safe space to share, divulging little of their own trauma.
+
+By the end of the call I felt completely emotionally drained - and i hadn’t even opened my terminal! By the time I got the cursory one line “We won’t be moving forward” email 24 hours later that emotional exhaustion quickly turned into two new feelings: shame and anger.
+
+I felt awful that i had shared such deeply personal things with the interviewer just to be cast off in a rejection email. I felt angry that I was rejected. I felt embarrassment that my soul was seemingly cracked open and judged “unworthy.” *It wasn’t my skills they were rejecting. It was… me..*  I felt confused that a mental health startup had consciously decided to choose an interview so capable of making candidates feel so vulnerable. 
+
+I don’t think this person was trying to be cruel. Honestly, that almost made it more confusing. The format itself created the problem.
+
+Culture fit is important, make no mistake. Make sure the people you hire are good people with strong morals. But consider evaluating this in a way that doesn’t make candidates feel like they need to share their deepest experiences just to scrape and claw for employment.

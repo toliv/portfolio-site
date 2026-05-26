@@ -7,8 +7,13 @@ export default function Page() {
       <h1 className="mb-8 text-2xl font-semibold tracking-tighter">
         Tony Oliverio
       </h1>
+      <p className="mb-4">{`Full-stack engineer mostly focused on backend. <3 distributed systems, infra, OTel`}</p>
+      <p className="mb-2">
+        {`Current: co-founder + CTO at `}
+        <a href="https://trycasa.com">Casa</a>
+      </p>
       <p className="mb-4">
-        {`Full stack engineer with a passion for creative engineering solutions, intuitive product experiences, and happy customers 🙂`}
+        {`Prev: Payments @ Check, Founding Engineer @ Turnstile`}
       </p>
       <div className="my-8 text-2xl">{`Projects`}</div>
       <div className="my-8">

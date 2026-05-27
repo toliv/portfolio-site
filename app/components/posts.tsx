@@ -22,6 +22,7 @@ export function BlogPosts() {
             key={post.slug}
             className="group mb-4 flex flex-col space-y-1 focus-visible:outline-none"
             href={`/blog/${post.slug}`}
+            prefetch={false}
           >
             <div className="w-full flex flex-col md:flex-row space-x-0 md:space-x-8">
               <p className="text-neutral-600 dark:text-neutral-400 w-[100px] tabular-nums">

@@ -21,6 +21,7 @@ export function ProjectPosts() {
             key={post.slug}
             className="group mb-4 flex flex-col space-y-1 focus-visible:outline-none"
             href={`/projects/${post.slug}`}
+            prefetch={false}
           >
             <div className="w-full flex flex-col items-start space-x-0 md:flex-row md:space-x-2">
               <p className="text-lg text-neutral-900 dark:text-neutral-100 tracking-tight">

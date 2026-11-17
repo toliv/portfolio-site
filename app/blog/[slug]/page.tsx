@@ -68,7 +68,7 @@ export default async function Blog({ params }: PageProps) {
   }
 
   return (
-    <section>
+    <section className="blog-post">
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -91,14 +91,10 @@ export default async function Blog({ params }: PageProps) {
           }),
         }}
       />
-      <h1 className="title font-semibold text-2xl tracking-tighter">
-        {post.metadata.title}
-      </h1>
-      <div className="flex justify-between items-center mt-2 mb-8 text-sm">
-        <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          {formatDate(post.metadata.publishedAt)}
-        </p>
-      </div>
+      <h1 className="article-title">{post.metadata.title}</h1>
+      <p className="article-meta">
+        Tony Oliverio · <time dateTime={post.metadata.publishedAt}>{formatDate(post.metadata.publishedAt)}</time>
+      </p>
       <article className="prose">
         <CustomMDX source={post.content} />
       </article>

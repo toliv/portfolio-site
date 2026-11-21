@@ -1,0 +1,119 @@
+[
+  {
+    "name": "essay-desktop",
+    "articleWidth": 840,
+    "font": "\"Study Charter\", Georgia, \"Times New Roman\", serif",
+    "charterLoaded": true,
+    "bodySize": "21px",
+    "bodyWeight": "400",
+    "bodyLineHeight": "34.02px",
+    "titleSize": "44px",
+    "titleLines": 1,
+    "paragraphLineLengths": [
+      81,
+      88,
+      93,
+      29
+    ],
+    "horizontalOverflow": false,
+    "firstParagraphTop": 257.109375,
+    "background": "rgb(255, 254, 250)",
+    "foreground": "rgb(51, 51, 47)",
+    "errors": []
+  },
+  {
+    "name": "essay-mobile",
+    "articleWidth": 350,
+    "font": "\"Study Charter\", Georgia, \"Times New Roman\", serif",
+    "charterLoaded": true,
+    "bodySize": "20.28px",
+    "bodyWeight": "400",
+    "bodyLineHeight": "31.434px",
+    "titleSize": "31.2px",
+    "titleLines": 2,
+    "paragraphLineLengths": [
+      34,
+      35,
+      33,
+      34,
+      37,
+      30,
+      35,
+      37,
+      11
+    ],
+    "horizontalOverflow": false,
+    "firstParagraphTop": 241.890625,
+    "background": "rgb(255, 254, 250)",
+    "foreground": "rgb(51, 51, 47)",
+    "errors": []
+  },
+  {
+    "name": "technical-desktop",
+    "articleWidth": 840,
+    "font": "\"Study Charter\", Georgia, \"Times New Roman\", serif",
+    "charterLoaded": true,
+    "bodySize": "21px",
+    "bodyWeight": "400",
+    "bodyLineHeight": "34.02px",
+    "titleSize": "44px",
+    "titleLines": 2,
+    "paragraphLineLengths": [
+      91,
+      86,
+      60
+    ],
+    "horizontalOverflow": false,
+    "firstParagraphTop": 361.40625,
+    "background": "rgb(255, 254, 250)",
+    "foreground": "rgb(51, 51, 47)",
+    "errors": []
+  },
+  {
+    "name": "technical-mobile",
+    "articleWidth": 350,
+    "font": "\"Study Charter\", Georgia, \"Times New Roman\", serif",
+    "charterLoaded": true,
+    "bodySize": "20.28px",
+    "bodyWeight": "400",
+    "bodyLineHeight": "31.434px",
+    "titleSize": "31.2px",
+    "titleLines": 4,
+    "paragraphLineLengths": [
+      32,
+      35,
+      36,
+      39,
+      32,
+      36,
+      23
+    ],
+    "horizontalOverflow": false,
+    "firstParagraphTop": 363.78125,
+    "background": "rgb(255, 254, 250)",
+    "foreground": "rgb(51, 51, 47)",
+    "errors": []
+  },
+  {
+    "name": "essay-dark",
+    "articleWidth": 840,
+    "font": "\"Study Charter\", Georgia, \"Times New Roman\", serif",
+    "charterLoaded": true,
+    "bodySize": "21px",
+    "bodyWeight": "400",
+    "bodyLineHeight": "34.02px",
+    "titleSize": "44px",
+    "titleLines": 1,
+    "paragraphLineLengths": [
+      81,
+      88,
+      93,
+      29
+    ],
+    "horizontalOverflow": false,
+    "firstParagraphTop": 257.109375,
+    "background": "rgb(35, 36, 32)",
+    "foreground": "rgb(222, 222, 213)",
+    "errors": []
+  }
+]

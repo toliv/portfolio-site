@@ -13,9 +13,6 @@ const navItems = {
   "/blog": {
     name: "blog",
   },
-  "/books": {
-    name: "books",
-  },
   "https://github.com/toliv/": {
     name: "github",
   },

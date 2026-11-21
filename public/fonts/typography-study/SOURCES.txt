@@ -1,0 +1,6 @@
+Typography study font sources
+Charter: https://practicaltypography.com/charter.html
+Newsreader: https://fonts.google.com/specimen/Newsreader
+Source Serif 4: https://fonts.google.com/specimen/Source+Serif+4
+Google Fonts Latin variable webfonts downloaded through fonts.googleapis.com.
+Original font notices are included in this directory.

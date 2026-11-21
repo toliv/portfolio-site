@@ -1,0 +1,4 @@
+# Permit normal coding work in this trusted repo; automatically review escalations.
+default_permissions = "coding"
+approval_policy = "on-request"
+approvals_reviewer = "auto_review"

@@ -1,6 +1,6 @@
 import "./global.css";
 import type { Metadata } from "next";
-import { Recursive } from "next/font/google";
+import localFont from "next/font/local";
 import { Navbar } from "./components/nav";
 import { Analytics } from "@vercel/analytics/react";
 import Footer from "./components/footer";
@@ -34,14 +34,21 @@ export const metadata: Metadata = {
   },
 };
 
-const recursive = Recursive({
-  subsets: ["latin"],
+const charter = localFont({
+  src: [
+    { path: "./fonts/charter/charter_regular.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/charter/charter_italic.woff2", weight: "400", style: "italic" },
+    { path: "./fonts/charter/charter_bold.woff2", weight: "700", style: "normal" },
+    { path: "./fonts/charter/charter_bold_italic.woff2", weight: "700", style: "italic" },
+  ],
+  variable: "--font-charter",
   display: "swap",
-  weight: "variable",
-  axes: ["MONO", "CASL"],
 });
 
-const cx = (...classes) => classes.filter(Boolean).join(" ");
+// Apply an explicit saved preference before paint; first-time visitors get light mode.
+const themeScript = `try {
+  document.documentElement.dataset.theme = localStorage.getItem("theme") === "dark" ? "dark" : "light";
+} catch {}`;
 
 export default function RootLayout({
   children,
@@ -49,22 +56,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={cx("text-black bg-white dark:text-white dark:bg-black")}
-    >
-      <body
-        className={cx(
-          recursive.className,
-          "antialiased max-w-2xl mx-4 mt-8 lg:mx-auto"
-        )}
-      >
-        <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
+    <html lang="en" data-theme="light" className={charter.variable} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body>
+        <div className="site-shell">
           <Navbar />
-          {children}
+          <main id="main-content">{children}</main>
           <Footer />
-          <Analytics />
-        </main>
+        </div>
+        <Analytics />
       </body>
     </html>
   );

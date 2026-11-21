@@ -1,37 +1,22 @@
 import Link from "next/link";
 import { getProjectsPosts } from "app/projects/utils";
-import { InteractiveTitle } from "./interactive-title";
 
 export function ProjectPosts() {
-  let allBlogs = getProjectsPosts();
+  let projects = getProjectsPosts();
 
   return (
-    <div>
-      {allBlogs
-        .sort((a, b) => {
-          if (
-            new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)
-          ) {
-            return -1;
-          }
-          return 1;
-        })
+    <div className="project-posts">
+      {projects
+        .sort((a, b) => new Date(b.metadata.publishedAt).getTime() - new Date(a.metadata.publishedAt).getTime())
         .map((post) => (
           <Link
             key={post.slug}
-            className="group mb-4 flex flex-col space-y-1 focus-visible:outline-none"
+            className="project-post-link"
             href={`/projects/${post.slug}`}
             prefetch={false}
           >
-            <div className="w-full flex flex-col items-start space-x-0 md:flex-row md:space-x-2">
-              <p className="text-lg text-neutral-900 dark:text-neutral-100 tracking-tight">
-                {post.metadata.title}:
-              </p>
-              <InteractiveTitle
-                className="min-w-0 text-neutral-900 dark:text-neutral-100 tracking-tight"
-                title={post.metadata.summary}
-              />
-            </div>
+            <span className="project-post-link-title">{post.metadata.title}</span>
+            <span className="project-post-link-summary">{post.metadata.summary}</span>
           </Link>
         ))}
     </div>
